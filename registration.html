@@ -52,16 +52,16 @@
 		var e3 = document.getElementById('errorPass').innerHTML;
 		var e4 = document.getElementById('errorPassRep').innerHTML;
 		if(e1 != "" && e2 != "" && e3 != "" && e4 != "") {
+			document.getElementById('noteImgReg').style.height = "705px";
+			document.getElementById('noteAndFieldsReg').style.height = "705px";
+		}
+		else if((e1 != "" && e2 != "" && e3 != "") || (e1 != "" && e2 != "" && e4 != "") || (e1 != "" && e3 != "" && e4 != "") || (e2 != "" && e3 != "" && e4 != "")) {
 			document.getElementById('noteImgReg').style.height = "680px";
 			document.getElementById('noteAndFieldsReg').style.height = "680px";
 		}
-		else if((e1 != "" && e2 != "" && e3 != "") || (e1 != "" && e2 != "" && e4 != "") || (e1 != "" && e3 != "" && e4 != "") || (e2 != "" && e3 != "" && e4 != "")) {
-			document.getElementById('noteImgReg').style.height = "670px";
-			document.getElementById('noteAndFieldsReg').style.height = "670px";
-		}
 		else if((e1 != "" && e2 != "") || (e1 != "" && e3 != "") || (e1 != "" && e4 != "") || (e2 != "" && e3 != "") || (e2 != "" && e4 != "") || (e3 != "" && e4 != "")) {
-			document.getElementById('noteImgReg').style.height = "630px";
-			document.getElementById('noteAndFieldsReg').style.height = "630px";
+			document.getElementById('noteImgReg').style.height = "645px";
+			document.getElementById('noteAndFieldsReg').style.height = "645px";
 		}
 			else if((e1 != "") || (e2 != "") || (e3 != "") || (e4 != "")) {
 		document.getElementById('noteImgReg').style.height = "580px";
@@ -135,16 +135,20 @@
 
 		if(logVal != "" && logVal.length != 0) {
 		if(/^[a-zA-Z1-9]+$/.test(logVal) === false) {
-			container.innerHTML ='В логине должны быть только латинские буквы';
+			container.innerHTML ='Логин должен содержать только латинские буквы';
+			numError = 1;
+		}
+		if(/\s/.test(logVal) === true) {
+			container.innerHTML ='Логин не должен содержать пробел';
 			numError = 1;
 		}
 		if(logVal.length < 4 || logVal.length > 20) {
-			container.innerHTML ='В логине должен быть от 4 до 20 символов';
-			numError = 2;
+			container.innerHTML ='Логин должен содержать от 4 до 20 символов';
+			numError = 1;
 		}
 		if(parseInt(logVal.substr(0, 1))) {
 			container.innerHTML ='Логин должен начинаться с буквы';
-			numError = 3;
+			numError = 1;
 		}
 
 		changeNoteHeight();
@@ -175,6 +179,15 @@
 			errorPassRep.innerHTML = "The field is empty";
 		}
 		else errorPassRep.innerHTML = "";
+
+
+		if (pass.length < 6) {
+			errorPass.innerHTML = "В пароле должно быть не менее 6 символов";
+		}
+		if (!/[a-z]/.test(pass) || !/[A-Z]/.test(pass) || !/[0-9]/.test(pass)) {
+			errorPass.innerHTML = "Пароль должен содержать прописную букву и цифру";
+		}
+
 
 		changeNoteHeight();
 
