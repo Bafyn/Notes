@@ -149,7 +149,7 @@
 
 		changeNoteHeight();
 
-		if(numError == 1 || numError == 2 || numError == 3) {
+		if(numError == 1) {
 			container.style.color = "red";
 			numError = 0;
 			return false;
@@ -165,7 +165,8 @@
 	function CheckFields() {
 		var errorPass = document.getElementById('errorPass');
 		var errorPassRep = document.getElementById('errorPassRep');
-		if(document.getElementById('pass').value == "" || document.getElementById('pass').value.length == 0) {
+		var pass = document.getElementById('pass').value;
+		if(pass == "" || pass.length == 0) {
 			errorPass.innerHTML = "The field is empty";
 		}
 		else errorPass.innerHTML = "";
