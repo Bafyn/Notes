@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Log in</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script type="text/javascript">
+	
+	// function CheckTextArea() {
+	// 	if(document.getElementById('log').value == "" || document.getElementById('log').value.length == 0) {
+	// 		document.getElementById('errorLog').style.visibility = "visible";
+	// 	}
+	// 	else document.getElementById('errorLog').style.visibility = "hidden";
+
+	// 	if(document.getElementById('pass').value == "" || document.getElementById('pass').value.length == 0) {
+	// 		document.getElementById('errorPass').style.visibility = "visible";
+	// 	}
+	// 	else document.getElementById('errorPass').style.visibility = "hidden";
+	// 	if(document.getElementById('errorLog').style.visibility == "hidden" && document.getElementById('errorPass').style.visibility == "hidden") {
+	// 	return true;
+	// 	}
+
+	// 	return false;
+	// }
+	
+	</script>
+	
+	<script type="text/javascript">
+
+	//Кроссбраузерная функция создания XMLHttpRequest
+	function getXmlHttp() {
+		var xmlhttp;
+
+		try {
+			xmlhttp = new ActiveXObject('Msxml2.XMLHTTP');
+		} catch(e) {
+			try {
+				xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (E) {
+				xmlhttp = false;
+			}
+		}
+		if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+			xmlhttp = new XMLHttpRequest();
+		}
+		return xmlhttp;
+	}
+
+	function CheckFields() {
+
+		var errorPass = document.getElementById('errorPass');
+		var errorLog = document.getElementById('errorLog');
+		if(document.getElementById('pass').value == "" || document.getElementById('pass').value.length == 0) {
+			errorPass.innerHTML = "The field is empty";
+		}
+		else errorPass.innerHTML = "";
+
+		var req = getXmlHttp(); // создать объект для запроса к серверу
+		var resText;
+		if(req) {
+		// onreadystatechange активируется при получении ответа сервера
+		req.onreadystatechange = function() {
+
+			if(req.readyState == 4) {  // если запрос закончил выполняться 
+				if(req.status == 200) {
+					resText = req.responseText;
+					errorLog.innerHTML = req.responseText;  // если статус 200 (ОК) - выдать ответ пользователю
+				}
+				else alert(req.statusText);
+			}
+		}
+		
+		req.open("POST", 'checkLogin.php', false)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var params = "login=" + document.getElementById('log').value + "&pass=" + document.getElementById('pass').value;
+
+		req.send(params); // отослать запрос
+		}
+		else {
+			alert("Браузер не поддерживает AJAX");
+		}
+		
+		if(errorLog.innerHTML == "Profile is available") {
+			errorLog.style.color = "#006400";
+		}
+		else {
+			errorLog.style.color = "red";
+		}
+		if(resText == "Profile already exists") {
+			return false;
+		}
+		if(errorLog.innerHTML == "The field is empty" || errorPass.innerHTML == "The field is empty") {
+		return false;
+		}
+		return true;
+
+	}
+	</script>
+</head>
+<body>
+<div id = "imgDiv">
+<img src="notes.png" id = "imgTitle">
+</div>
+<p id = "descr">Convenient means of storing notes!</p>
+<!-- <div id = "fieldsDiv">
+	<form method="post" action="data.php" onSubmit="return CheckFields()"><br/>
+		<input type="text" name="personLogin" id = "log" class="name" maxlength="15" placeholder = "Enter the login"/>
+		<p id = "errorLog" name = "errorLogin">The field is empty</p>
+		<input type="password" name="personPass" id = "pass" maxlength="25" placeholder = "Enter the password"/>
+		<p id = "errorPass" name = "errorPassword">hef fielrc is sdgsg</p>
+		<input type = "submit" name="save" id = "btnLogin" value="Log in"/>
+	</form>
+</div> -->
+<div id = "noteAndFields">
+<div id="qwe">
+	<img src="note.png" id = "noteImg">
+	</div>
+
+	<div id = "fieldsDiv">
+	<form method="post" action="addToBD.php" onSubmit="return CheckFields()"><br/>
+		<input type="text" title="Login" name="personLogin" required autofocus onchange="CheckFields()" id = "log" maxlength="15" placeholder = "Enter the login"/>
+		<p id = "errorLog" name = "errorLogin"></p>
+		<input type="password" title="Password" name="personPass" required onchange="CheckFields()" id = "pass" maxlength="25" placeholder = "Enter the password"/>
+		<p id = "errorPass" name = "errorPassword"></p>
+		<input type = "submit" name="submit" id = "btnLogin" value="Log in"/><br/>
+		<a id = "createAccount" href="registration.html">Create account</a>
+	</form>
+
+	</div>
+
+</div>
+			<p id = "copy">Copyright&copy2016 Nikitin Dima</p>
+
+</body>
+</html>
