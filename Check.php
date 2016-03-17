@@ -6,45 +6,45 @@ $con -> close();
 
 
 if($_POST['aim'] == "checkLoginReg") {
-	if(empty(trim($_POST['login']))) {
-	echo "The field is empty";
-	exit();
-	}
-	while($document = $cursor -> getNext())
-	{
-		if($_POST['login'] == $document['login']) {
+	
+		$login = $_POST['login'];
+		$user = $collection -> findOne(array('login' => $login));
+		if($_POST['login'] == $user['login']) {
 			echo "Profile already exists";
-			exit();
 		}
-	}
-	echo "Profile is available";
 }
 
 if($_POST['aim'] == "checkEmailReg") {
-	if(empty($_POST['email'])) {
-		echo "The field is empty";
-		exit();
+	$email = $_POST['email'];
+	$user = $collection -> findOne(array('email' => $email));
+	if($_POST['email'] == $user['email']) {
+		echo "E-mail is used";
 	}
-	while($document = $cursor -> getNext())
-	{
-		if($_POST['email'] == $document['email']) {
-			echo "E-mail is used";
-			exit();
-		}
-	}
-	echo "E-mail is available";
 }
 
 if($_POST['aim'] == "checkLogin") {
+	
 	$login = $_POST['login'];
 	$pass = sha1(md5($_POST['pass']));
-	while($document = $cursor -> getNext())
-	{
-		if ($login == $document['login'] && $pass == $document['password']) {
-			echo "ok";
-			exit();
-		}
+	$user = $collection -> findOne(array('login' => $login));
+	if($user['password'] === $pass) {
+		$hash = md5(genCode());
+		setcookie('id', $user["_id"], time()+3600);
+		setcookie('hash', $hash, time()+3600);
+		$collection -> update(array('login' => $login), array('$set' => array('hash' => $hash)), array('upsert' => false));
+		echo "ok";
+	} else {
+		echo "Login or password is incorrect";
 	}
-	echo "Login or password is incorrect";
+}
+
+function genCode($length = 10) {
+	$chars = "zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP1234567890";
+	$code = "";
+	while (strlen($code) < $length) {
+		$char = $chars[mt_rand(0, strlen($chars)-1)];
+		$code .= $char;
+	}
+	return $code;
 }
 ?>
