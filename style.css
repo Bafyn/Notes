@@ -1,4 +1,4 @@
-		body {
+	body {
 		margin: 0;
 		background-image: url("tree.jpg");
 		background-size: 100%;
@@ -43,7 +43,7 @@
 		margin: 0 auto;
 		margin-top: 4%;
 		text-align: center;
-		width: 260px;
+		width: 280px;
 		font-size: 20px;
 		position: relative;
 		top: 20%;
@@ -100,7 +100,7 @@
 
 	#noteImg {
 		width: 450px;
-		height: 440px;
+		height: 400px;
 	}
 	#noteImgReg {
 		position: relative;
@@ -111,7 +111,7 @@
 	#noteAndFields {
 		margin: 0 auto;
 		width: 450px;
-		height: 400px;
+		height: 420px;
 	}
 	#createAccount, #backToLogin {
 		color: #4169E1;
@@ -119,19 +119,19 @@
 		text-decoration: none;
 	}
 	#backToLogin {
-				padding:0px 40px 0px 10px;
-				font-size: 80%;
+		padding:0px 40px 0px 10px;
+		font-size: 80%;
 }
 	#copy {
 	width: 100%;
 	text-align: center;
-	}
+	bottom: 0;
+ 	}
 	#noteAndFieldsReg {
 		position: relative;
 		margin: 0 auto;
 		width: 480px;
 		height: 510px;
-
 
 	}
 	#qwe {
