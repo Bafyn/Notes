@@ -3,65 +3,9 @@
 <head>
 	<title>Log in</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
-
-	<script type="text/javascript">
-
-	//Кроссбраузерная функция создания XMLHttpRequest
-	function getXmlHttp() {
-		var xmlhttp;
-
-		try {
-			xmlhttp = new ActiveXObject('Msxml2.XMLHTTP');
-		} catch(e) {
-			try {
-				xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-			} catch (E) {
-				xmlhttp = false;
-			}
-		}
-		if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
-			xmlhttp = new XMLHttpRequest();
-		}
-		return xmlhttp;
-	}
-
-	function CheckFields() {
-
-		var errorPass = document.getElementById('errorPass');
-		
-		var req = getXmlHttp(); // создать объект для запроса к серверу
-		var resText;
-		if(req) {
-		// onreadystatechange активируется при получении ответа сервера
-		req.onreadystatechange = function() {
-
-			if(req.readyState == 4) {  // если запрос закончил выполняться 
-				if(req.status == 200) {
-					if(req.responseText == "ok") {
-						location.href = "Log_In.php";
-					}
-					else {
-						errorPass.innerHTML = req.responseText;
-						document.getElementById('btnLogin').value = "Log in";
-						document.getElementById('btnLogin').disabled = false;
-					}
-				}
-				else alert(req.statusText);
-			}
-		}
-		req.open("POST", 'Check.php', true)  // задать адрес подключения
-		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		var params = "login=" + document.getElementById('log').value + "&pass=" + document.getElementById('pass').value + "&aim=checkLogin";
-
-		req.send(params); // отослать запрос
-		}
-		else {
-			alert("Браузер не поддерживает AJAX");
-		}
-		document.getElementById('btnLogin').value = "Wait...";
-		document.getElementById('btnLogin').disabled = true;
-	}
-	</script>
+	<link rel="icon" type="image/png" href="icon.png" />
+	<script type="text/javascript" src = "script1.js"></script>
+	
 </head>
 <body>
 <div id = "imgDiv">
@@ -75,17 +19,18 @@
 
 	<div id = "fieldsDiv">
 	<form method="post" action="Log_In.php"><br/>
-		<input type="text" title="Login" name="personLogin" required id = "log" maxlength="15" placeholder = "Enter the login"/>
+		<input type="text" title="Login" name="personLogin" required onchange="CheckFields()" id = "log" maxlength="20" placeholder = "Enter the login"/>
 		<p id = "errorLog" name = "errorLogin"></p>
-		<input type="password" title="Password" name="personPass" required id = "pass" maxlength="25" placeholder = "Enter the password"/>
+		<input type="password" title="Password" name="personPass" required onchange="CheckFields()" id = "pass" maxlength="25" placeholder = "Enter the password"/>
 		<p id = "errorPass" name = "errorPassword"></p>
-		<input type = "submit" name="submit" id = "btnLogin" onclick="CheckFields()" value="Log in"/><br/>
+		<input type = "submit" name="submit" id = "btnLogin" value="Log in"/><br/>
 		<a id = "createAccount" href="registration.html">Create account</a>
 	</form>
 
 	</div>
 
 </div>
-	<p id = "copy">Copyright&copy2016 Nikitin Dima</p>
+		<footer id = "copy">Copyright&copy2016 Nikitin Dima</footer>
+
 </body>
 </html>
