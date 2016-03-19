@@ -23,7 +23,7 @@ if(isset($_COOKIE['id']) && isset($_COOKIE['hash'])) {
 <div id = "imgDiv">
 <img src="notes.png" id = "imgTitle">
 </div>
-<p id = "descr">Convenient means of storing notes!</p>
+<p id = "descr">Convenient means of storing notes!</p><br/>
 <div id = "noteAndFieldsReg">
 <div id="qwe">
 	<img src="note.png" id = "noteImgReg">
