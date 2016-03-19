@@ -17,7 +17,7 @@ function getXmlHttp() {
 return xmlhttp;	
 }
 
-//посылает запрос на сервер для првоерки полей при регистриции
+//посылает запрос на сервер для проверки полей при регистриции
 function makeRequest(cont, par) {
 		var req = getXmlHttp(); // создать объект для запроса к серверу
 		if(req) {
@@ -50,6 +50,7 @@ function makeRequest(cont, par) {
 		var params = "email=" + document.getElementById('email').value + "&aim=checkEmailReg";
 		if(document.getElementById('email').value.trim().length == 0) {
 			container.innerHTML ='The field is empty';
+			changeNoteHeight();
 			return;
 		}
 		makeRequest(container, params);
@@ -126,15 +127,13 @@ function makeRequest(cont, par) {
 
 //проверяет возможность отправки данных на сервер для регистрации
 	function CheckSubmitReg() {
-		CheckLogin();
-		CheckEmail();
-		CheckFieldsReg();
 		if(document.getElementById('errorLog').innerHTML == "" && document.getElementById('errorEmail').innerHTML == "" && document.getElementById('errorPass').innerHTML == "" && document.getElementById('errorPassRep').innerHTML == "") { 
 			return true;
 		}
 		return false;
 	}
 
+//проверяет возможность отправки данных на сервер при авторизации
 function CheckLoginAuthorization() {
 	var btn = document.getElementById('btnLogin');
 	btn.value = "Wait...";
@@ -164,8 +163,7 @@ function CheckLoginAuthorization() {
 						btn.value = "Log in";
 						btn.disabled = false;
 					}
-					else
-					{
+					else {
 						location.replace("notesCollection.html");
 					}
 				}
@@ -182,6 +180,69 @@ function CheckLoginAuthorization() {
 			alert("Браузер не поддерживает AJAX");
 		}
 	}
+}
+
+//проверяет, авторизирован ли пользователь
+function CheckAutorizationIntervalMain() {
+		var req = getXmlHttp();
+
+		req.onreadystatechange = function() {
+			if(req.readyState == 4) {  // если запрос закончил выполняться 
+				if(req.status == 200) {
+					if(req.responseText != "ok") {
+						location.replace("index.php");
+					}
+				}
+				else alert(req.statusText);
+			}	
+		}
+
+		req.open("POST", 'chAuth.php', true)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.send(); // отослать запрос
+		setTimeout("CheckAutorizationIntervalMain()", "100");
+}
+
+
+// function AuthorizationCheck() {
+// 	var resText;
+// 	var req = getXmlHttp(); // создать объект для запроса к серверу
+
+// 	if(req) {
+// 	// onreadystatechange активируется при получении ответа сервера
+// 	req.onreadystatechange = function() {
+
+// 			if(req.readyState == 4) {  // если запрос закончил выполняться 
+// 				if(req.status == 200) {
+// 					if(req.responseText == "ok") {
+// 						location.href = "notesCollection.html";
+// 					}
+// 				}
+// 				else alert(req.statusText);
+// 			}
+// 		}
+// 		req.open("POST", 'chAuth.php', true)  // задать адрес подключения
+// 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+// 		req.send(); // отослать запрос
+// 		}
+// 		else {
+// 			alert("Браузер не поддерживает AJAX");
+// 		}
+// }
+
+function Logout() {
+	var req = getXmlHttp(); // создать объект для запроса к серверу
+
+	if(req) {
+	// onreadystatechange активируется при получении ответа сервера
+	
+		req.open("POST", 'logout.php', true)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.send(); // отослать запрос
+		}
+		else {
+			alert("Браузер не поддерживает AJAX");
+		}
 }
 
 //изменить размер заметки-рисунка
