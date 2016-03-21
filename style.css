@@ -68,11 +68,11 @@
 	}
 	#descr {
 		margin: 0 auto;
-		font-family: cursive;
+		font-family:cursive, verdana, fantasy;
 		font-size: 35px;
 		color: #4F4F4F;
 		text-align: center;
-		width: 570px;
+		width: 670px;
 	}
 	#log, #pass, #email, #passRep {
 		width: 250px;
@@ -100,7 +100,7 @@
 
 	#noteImg {
 		width: 450px;
-		height: 400px;
+		height: 410px;
 	}
 	#noteImgReg {
 		position: relative;
