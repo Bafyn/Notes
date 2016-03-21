@@ -1,3 +1,336 @@
 body {
 	background-image: url("bgMain.jpg");
+	background-size: 100%;
+}
+#menu {
+	background-color: #B0C4DE;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 220px;
+    z-index: 2;
+}
+#logo {
+	text-align: center;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 30px;
+	height: 90px;
+	background:url("logo.png") 50% 50% no-repeat;
+	border-bottom: 1px solid;
+	color: #800080;
+	z-index: 3;
+}
+#logoutBtn {
+	position: relative;
+	left: 20%;
+}
+#createNote {
+	width: 130px;
+	height: 132px;
+	text-align: center;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	cursor: pointer;
+}
+#createNoteText {
+	font-family: AllodsWest;
+	font-size: 120%;
+}
+
+@font-face {
+    font-family: DyrDyr; /* Гарнитура шрифта */
+    src: url(DyrDyr.ttf); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+    font-family: AllodsWest;
+    src: url(AllodsWest.ttf);
+}
+
+@font-face {
+    font-family: DuduCalligraphy;
+    src: url(DuduCalligraphy.ttf);
+}
+
+#settings {
+	position: absolute;
+	height: 31px;
+	line-height: 31px;
+	border-top: 1px solid #800080;
+	border-bottom: 1px solid #800080;
+	color: #696969;
+	padding: 10px 0 10px 0;
+	text-align: center;
+	font-family: DyrDyr;
+	font-size: 150%;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+#menuFooter {
+	position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	height: 100px;
+}
+#logout {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	color: #696969;
+	line-height: 47px;
+	text-align: center;
+	font-family: DyrDyr;
+	font-size: 150%;
+	cursor: pointer;
+	height: 47px;
+	width: 85%;
+}
+#hideMenu {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 15%;
+	height: 46px;
+	cursor: pointer;
+	background:url('hide.png') 50% 50% no-repeat;
+
+}
+#noteForm {
+	display: none;
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+	width: 420px;
+	height: 310px;
+	padding: 30px;
+	position: absolute;
+    z-index: 2;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	margin: auto;
+	/*top: 50%;
+  	left: 50%;*/
+/*  		margin: -170px 0 0 -237px;
+*/
+/*  	transform: translate(-50%, -50%);
+*/	background-color: #FFE4B5;
+}
+#noteDescr {
+	resize:none;
+}
+
+#createError {
+	display: none;
+	height: 25px;
+	border-radius: 6px;
+	width: 370px;
+	padding: 10px;
+	margin-top: -5px;
+	background: #FF6A6A;
+	font-size: 20px;
+	text-align: center;
+	color: #363636;
+}
+h1 {
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    text-align: center;
+    color: #666;
+    margin: -10px 0 15px 0;
+    letter-spacing: 6px;
+    font: bold 30px DuduCalligraphy, Verdana, Helvetica;
+}
+#inputs input, textarea
+{
+    background-color: #FFF8DC;
+    padding: 10px 10px 10px 10px;
+    margin: 0 0 10px 0;
+    width: 370px; 
+    font-size: 16px;
+    border: 1px solid #ccc;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 1px 1px #ccc inset;
+}
+
+fieldset
+{
+    border: 0;
+}
+#inputs input:focus, textarea:focus
+{
+    background-color: #fff;
+    border-color: #e8c291;
+    outline: none;
+    -moz-box-shadow: 0 0 0 1px #e8c291 inset;
+    -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+}
+#createNoteBtn
+{		
+    background-color: #ffb94b;
+    background-image: -webkit-linear-gradient(top, #fddb6f, #ffb94b);
+    background-image: -moz-linear-gradient(top, #fddb6f, #ffb94b);
+    background-image: -o-linear-gradient(top, #fddb6f, #ffb94b);
+    background-image: linear-gradient(top, #fddb6f, #ffb94b);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d69e31 #e3a037 #d5982d #e3a037;
+    height: 40px;
+    width: 180px;
+    cursor: pointer;
+    font: bold 30px DuduCalligraphy, Arial, Helvetica;
+    color: #8f5a0a;
+    margin: 20px 0 0 0;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+#createNoteBtn:hover,#createNoteBtn:focus
+{		
+    background-color: #fddb6f;
+    background-image: -webkit-linear-gradient(top, #ffb94b, #fddb6f);
+    background-image: -moz-linear-gradient(top, #ffb94b, #fddb6f);
+    background-image: -o-linear-gradient(top, #ffb94b, #fddb6f);
+    background-image: linear-gradient(top, #ffb94b, #fddb6f);
+}	
+#createNoteBtn:active
+{		
+    outline: none;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;		
+}
+#note {
+    float: left;
+    width:220px;
+    height:245px;
+    z-index:1;
+    margin: 10px;
+/*    margin-left:400px;
+*/}
+#deleteNote {
+    position: relative;
+    background:url(cross.png) 50% 50% no-repeat;
+    border-top-right-radius: 5px;
+    margin-left: 91%;
+    width: 9%;
+    height: 43px;
+    background-color: red;
+}
+#editNote {
+    position: relative;
+    background:url(edit.png) 50% 50% no-repeat;
+    margin-left: 82%;
+    margin-top: -19.52%;
+    width: 9%;
+    height: 43px;
+    background-color: magenta;
+}
+#noteTitle {
+    position: relative;
+    word-wrap:break-word;
+    border-top-left-radius: 5px;
+    margin-top: -19.53%;
+    padding: 6px 0 2px 0;
+    text-align: center;
+    width: 81.97%;
+    height: 35px;
+    line-height: 17.5px;
+/*    border:1px solid;
+*/    background-color: blue;
+}
+#noteDescription {
+    resize:none;
+    border:none;
+    border-radius: 0px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-top: -7.3%;
+    width: 90.9%;
+    height: 185px;
+}
+#noteCollection {
+    height: auto;
+    margin-left: 230px;
+/*    width: 70%;
+*/}
+
+
+@-webkit-keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+
+@keyframes hide {
+	from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-90%, 0, 0);
+  }
+}
+.zoomIn {
+   animation: zoomIn 1s;
+}
+
+.hideM {
+	animation: hide 4s ;
+}
+
+
+
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fadeOut {
+  animation: fadeOut 1s;
 }
