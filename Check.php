@@ -29,8 +29,8 @@ if($_POST['aim'] == "checkLogin") {
 	$user = $collection -> findOne(array('login' => $login));
 	if($user['password'] === $pass) {
 		$hash = md5(genCode());
-		setcookie('id', $user["_id"], time()+3600);
-		setcookie('hash', $hash, time()+3600);
+		setcookie('id', $user["_id"], time()+18000);
+		setcookie('hash', $hash, time()+18000);
 		$collection -> update(array('login' => $login), array('$set' => array('hash' => $hash)), array('upsert' => false));
 		echo "ok";
 	} else {
@@ -38,6 +38,10 @@ if($_POST['aim'] == "checkLogin") {
 	}
 }
 
+if($_POST['aim'] == "logout") {
+	setcookie('id', "", time()-3600);
+	setcookie('hash', "", time()-3600);
+}
 function genCode($length = 10) {
 	$chars = "zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP1234567890";
 	$code = "";
