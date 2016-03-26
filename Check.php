@@ -42,6 +42,20 @@ if($_POST['aim'] == "logout") {
 	setcookie('id', "", time()-3600);
 	setcookie('hash', "", time()-3600);
 }
+
+if($_POST['aim'] == "editProfile") {
+	$passNew = sha1(md5($_POST['passNew']));
+	$passOld = sha1(md5($_POST['passOld']));
+	$user = $collection -> findOne(array("_id" => new MongoId($_COOKIE['id'])));
+	if($passOld == $user['password']) {
+		$collection -> update(array('_id' => new MongoId($_COOKIE['id'])), array('$set' => array('password' => $passNew)), array('upsert' => false));
+		echo "ok";
+	}
+	else {
+		echo "error";
+	}
+}
+
 function genCode($length = 10) {
 	$chars = "zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP1234567890";
 	$code = "";
