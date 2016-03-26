@@ -44,7 +44,7 @@ function CreateNote() {
 				var descrValue = document.getElementById('noteDescr').value;
 				DrawNote(titleValue, descrValue, dateP);
 				document.getElementById('noteForm').className = "zoomOut";
-				setTimeout("document.getElementById('noteForm').style.display = 'none';document.getElementById('noteForm').classList.remove('zoomOut');document.getElementById('darkBg').style.display = 'none';", 500);
+				setTimeout("document.getElementById('noteForm').style.display = 'none';document.getElementById('noteForm').classList.remove('zoomOut');document.getElementById('darkBg').style.display = 'none';", 450);
 			}
 			else alert(req.statusText);
 		}
@@ -256,6 +256,24 @@ function CheckAutorizationIntervalMain() {
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		req.send(); // отослать запрос
 		setTimeout("CheckAutorizationIntervalMain()", "100");
+}
+
+
+function DeleteAllNotes () {
+	var req = getXmlHttp();
+
+	req.onreadystatechange = function() {
+		if(req.readyState == 4) {  // если запрос закончил выполняться 
+			if(req.status == 200) {
+				location.reload();
+			}
+			else alert(req.statusText);
+		}	
+	}
+
+	req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.send("aim=deleteAll"); // отослать запрос
 }
 
 
