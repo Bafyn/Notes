@@ -1,6 +1,7 @@
-<?php 
-$fh = fopen("users.txt", 'w+') or die("Открыть файл не удалось");
+<?php
 $con = new MongoClient();
+
+$fh = fopen("users.txt", 'w+') or die("Открыть файл не удалось");
 $collectionU = $con -> notes -> users;
 $cursorU = $collectionU -> find();
 $counter1 = 0;
