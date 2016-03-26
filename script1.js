@@ -100,12 +100,12 @@ function makeRequest(cont, par) {
 		var errorPassRep = document.getElementById('errorPassRep');
 		var pass = document.getElementById('pass').value;
 		var passRep = document.getElementById('passRep').value;
-		if(pass == "" || pass.length == 0) {
+		if(pass.trim().length == 0) {
 			errorPass.innerHTML = "The field is empty";
 		}
 		else errorPass.innerHTML = "";
 
-		if(passRep == "" || passRep.length == 0) {
+		if(passRep.trim().length == 0) {
 			errorPassRep.innerHTML = "The field is empty";
 		}
 		else errorPassRep.innerHTML = "";
@@ -189,8 +189,11 @@ function CheckAutorizationIntervalMain() {
 		req.onreadystatechange = function() {
 			if(req.readyState == 4) {  // если запрос закончил выполняться 
 				if(req.status == 200) {
-					if(req.responseText != "ok") {
+					if(req.responseText == "Error") {
 						location.replace("index.php");
+					}
+					else {
+						document.getElementById('loggedName').innerHTML = req.responseText;
 					}
 				}
 				else alert(req.statusText);
@@ -203,7 +206,129 @@ function CheckAutorizationIntervalMain() {
 		setTimeout("CheckAutorizationIntervalMain()", "100");
 }
 
+function DrawNotes() {
+	CheckAutorizationIntervalMain();
+	var req = getXmlHttp();
 
+	req.onreadystatechange = function() {
+		if(req.readyState == 4) {  // если запрос закончил выполняться 
+			if(req.status == 200) {
+				var noteJ = req.responseText;
+				var notes = JSON.parse(noteJ);
+				for(var i = 0; i < notes.length; i++) {
+					DrawNote(notes[i].title, notes[i].description, notes[i].date);
+				}
+			}
+			else alert(req.statusText);
+		}	
+	}
+
+	req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.send("aim=drawNotes"); // отослать запрос
+}
+
+function DrawNote (title, descr, dateP) {
+	var note = document.createElement('div');
+	var deleteNote = document.createElement('div');
+	var editNote = document.createElement('div');
+	var noteTitle = document.createElement('p');
+	var noteDescription = document.createElement('textarea');
+	var date = document.createElement('span');
+
+	note.setAttribute('id', 'note');
+	deleteNote.setAttribute('id', 'deleteNote');
+	editNote.setAttribute('id', 'editNote');
+	noteTitle.setAttribute('id', 'noteTitle');
+	noteDescription.setAttribute('id', 'noteDescription');
+	noteDescription.setAttribute('readonly', 'true');
+	noteDescription.setAttribute('maxlength', '2000');
+	date.setAttribute('id', 'date');
+
+	noteTitle.innerHTML = title;
+	noteDescription.innerHTML = descr;
+	date.innerHTML = dateP;
+
+	note.appendChild(deleteNote);
+	note.appendChild(editNote);
+	note.appendChild(noteTitle);
+	note.appendChild(noteDescription);
+	note.appendChild(date);
+
+	noteTitle.onmouseover = function() {
+		this.previousSibling.style.backgroundImage = "url(edit.png)";
+		this.previousSibling.previousSibling.style.backgroundImage = "url(cross.png)";
+	}
+	noteTitle.onmouseout = function() {
+		this.previousSibling.style.backgroundImage = "none";
+		this.previousSibling.previousSibling.style.backgroundImage = "none";
+	}
+
+	editNote.onmouseover = function() {
+		this.style.backgroundColor = "#FFC125";
+		this.style.backgroundImage = "url(edit.png)";
+		this.previousSibling.style.backgroundImage = "url(cross.png)";
+	}
+	editNote.onmouseout = function() {
+		this.style.backgroundColor = "#FF8C00";
+		this.style.backgroundImage = "none";
+		this.previousSibling.style.backgroundImage = "none";
+	}
+
+	deleteNote.onmouseover = function() {
+		this.style.backgroundColor = "#FFC125";
+		this.style.backgroundImage = "url(cross.png)";
+		this.nextSibling.style.backgroundImage = "url(edit.png)";
+	}
+	deleteNote.onmouseout = function() {
+		this.style.backgroundColor = "#FF8C00";
+		this.style.backgroundImage = "none";
+		this.nextSibling.style.backgroundImage = "none";
+	}
+
+	editNote.onclick = function() {
+		document.getElementById('darkBg').style.display = "block";
+		if(document.getElementById('noteForm').style.display == "block") {
+			document.getElementById('noteForm').style.display = "none";
+		}
+		if(document.getElementById('editProfileForm').style.display == "block") {
+			document.getElementById('editProfileForm').style.display = "none";
+		}
+		var editNoteForm = document.getElementById('editNoteForm');
+		titleBeforeEdit = this.nextSibling.innerHTML;
+		descrBeforeEdit = this.nextSibling.nextSibling.innerHTML;
+		dateBeforeEdit = this.nextSibling.nextSibling.nextSibling.innerHTML;
+		document.getElementById('editNoteTitleForm').value = titleBeforeEdit;
+		document.getElementById('editNoteDescr').value = descrBeforeEdit;
+		noteToEdit = this.parentElement;
+		editNoteForm.style.display = "block";
+		if(!editNoteForm.classList.contains("zoomIn")) {
+			editNoteForm.className = "zoomIn";
+		}
+		// setTimeout("editNoteForm.classList.remove('zoomIn');", 1000);
+	}
+
+	deleteNote.onclick = function() {
+		document.getElementById('editNoteForm').display = "none";
+		var req2 = getXmlHttp(); // создать объект для запроса к серверу
+		var resText2;
+		var that = this;
+		if(req2) {
+			req2.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+			req2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			var params2 = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&aim=deleteNote";
+			req2.send(params2); // отослать запрос
+			this.parentElement.setAttribute('class', 'fadeOut');
+			setTimeout(function () { 
+				that.parentElement.parentElement.removeChild(that.parentElement);
+				}, 1000);
+		}
+		else {
+			alert("Браузер не поддерживает AJAX");
+		}
+	}
+	document.getElementById('noteCollection').appendChild(note); 
+}
 // function AuthorizationCheck() {
 // 	var resText;
 // 	var req = getXmlHttp(); // создать объект для запроса к серверу
@@ -236,9 +361,9 @@ function Logout() {
 	if(req) {
 	// onreadystatechange активируется при получении ответа сервера
 	
-		req.open("POST", 'logout.php', true)  // задать адрес подключения
+		req.open("POST", 'Check.php', true)  // задать адрес подключения
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		req.send(); // отослать запрос
+		req.send("aim=logout"); // отослать запрос
 		}
 		else {
 			alert("Браузер не поддерживает AJAX");
@@ -271,4 +396,4 @@ function changeNoteHeight() {
 			document.getElementById('noteImgReg').style.height = "510px";
 			document.getElementById('noteAndFieldsReg').style.height = "510px";
 		}
-	}
+}
