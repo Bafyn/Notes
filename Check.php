@@ -4,14 +4,12 @@ $collection = $con -> notes -> users;
 $cursor = $collection -> find();
 $con -> close();
 
-
 if($_POST['aim'] == "checkLoginReg") {
-	
-		$login = $_POST['login'];
-		$user = $collection -> findOne(array('login' => $login));
-		if($_POST['login'] == $user['login']) {
-			echo "Profile already exists";
-		}
+	$login = $_POST['login'];
+	$user = $collection -> findOne(array('login' => $login));
+	if($_POST['login'] == $user['login']) {
+		echo "Profile already exists";
+	}
 }
 
 if($_POST['aim'] == "checkEmailReg") {
@@ -23,24 +21,29 @@ if($_POST['aim'] == "checkEmailReg") {
 }
 
 if($_POST['aim'] == "checkLogin") {
-	
-	$login = $_POST['login'];
+	$loginOrEm = $_POST['loginOrEmail'];
+	$whatExactly = "";
 	$pass = sha1(md5($_POST['pass']));
-	$user = $collection -> findOne(array('login' => $login));
+	$user = $collection -> findOne(array('login' => $loginOrEm));
+	$whatExactly = "login";
+	if(is_null($user)) {
+		$user = $collection -> findOne(array('email' => $loginOrEm));
+		$whatExactly = "email";
+	}
 	if($user['password'] === $pass) {
 		$hash = md5(genCode());
 		setcookie('id', $user["_id"], time()+18000);
 		setcookie('hash', $hash, time()+18000);
-		$collection -> update(array('login' => $login), array('$set' => array('hash' => $hash)), array('upsert' => false));
+		if($whatExactly == "login") {
+			$collection -> update(array('login' => $loginOrEm), array('$set' => array('hash' => $hash)), array('upsert' => false));
+		}
+		else {
+			$collection -> update(array('email' => $loginOrEm), array('$set' => array('hash' => $hash)), array('upsert' => false));
+		}
 		echo "ok";
 	} else {
 		echo "Login or password is incorrect";
 	}
-}
-
-if($_POST['aim'] == "logout") {
-	setcookie('id', "", time()-3600);
-	setcookie('hash', "", time()-3600);
 }
 
 if($_POST['aim'] == "editProfile") {
@@ -54,6 +57,11 @@ if($_POST['aim'] == "editProfile") {
 	else {
 		echo "error";
 	}
+}
+
+if($_POST['aim'] == "logout") {
+	setcookie('id', "", time()-3600);
+	setcookie('hash', "", time()-3600);
 }
 
 function genCode($length = 10) {
