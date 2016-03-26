@@ -84,8 +84,7 @@ function EditNote() {
 	var dateChanged ="Changed: " + now.getFullYear() + "." + (now.getMonth()+1) + "." + now.getDate() + " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 	if(req) {
 	// onreadystatechange активируется при получении ответа сервера
-	req.onreadystatechange = function() {
-
+		req.onreadystatechange = function() {
 			if(req.readyState == 4) {  // если запрос закончил выполняться 
 				if(req.status == 200) {
 					noteToEdit.children[2].innerHTML = document.getElementById('editNoteTitleForm').value;
@@ -104,7 +103,7 @@ function EditNote() {
 		alert("Браузер не поддерживает AJAX");
 	}
 	document.getElementById('editNoteForm').className = "zoomOut";
-	setTimeout("document.getElementById('editNoteForm').style.display = 'none';document.getElementById('editNoteForm').classList.remove('zoomOut');document.getElementById('darkBg').style.display = 'none';", 500);
+	setTimeout("document.getElementById('editNoteForm').style.display = 'none';document.getElementById('editNoteForm').classList.remove('zoomOut');document.getElementById('darkBg').style.display = 'none';", 450);
 }
 
 
@@ -112,22 +111,27 @@ function DrawNotes() {
 	CheckAutorizationIntervalMain();
 	var req = getXmlHttp();
 
-	req.onreadystatechange = function() {
-		if(req.readyState == 4) {  // если запрос закончил выполняться 
-			if(req.status == 200) {
-				var noteJ = req.responseText;
-				var notes = JSON.parse(noteJ);
-				for(var i = 0; i < notes.length; i++) {
-					DrawNote(notes[i].title, notes[i].description, notes[i].date);
+	if(req) {
+		req.onreadystatechange = function() {
+			if(req.readyState == 4) {  // если запрос закончил выполняться 
+				if(req.status == 200) {
+					var noteJ = req.responseText;
+					var notes = JSON.parse(noteJ);
+					for(var i = 0; i < notes.length; i++) {
+						DrawNote(notes[i].title, notes[i].description, notes[i].date);
+					}
 				}
-			}
-			else alert(req.statusText);
-		}	
-	}
+				else alert(req.statusText);
+			}	
+		}
 
-	req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
-	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	req.send("aim=drawNotes"); // отослать запрос
+		req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.send("aim=drawNotes"); // отослать запрос
+	}
+	else {
+		alert("Браузер не поддерживает AJAX");
+	}
 }
 
 
@@ -139,6 +143,7 @@ function DrawNote (title, descr, dateP) {
 	var noteDescription = document.createElement('textarea');
 	var date = document.createElement('span');
 
+	note.className = "fadeIn";
 	note.setAttribute('id', 'note');
 	deleteNote.setAttribute('id', 'deleteNote');
 	editNote.setAttribute('id', 'editNote');
@@ -162,6 +167,7 @@ function DrawNote (title, descr, dateP) {
 		this.previousSibling.style.backgroundImage = "url(edit.png)";
 		this.previousSibling.previousSibling.style.backgroundImage = "url(cross.png)";
 	}
+
 	noteTitle.onmouseout = function() {
 		this.previousSibling.style.backgroundImage = "none";
 		this.previousSibling.previousSibling.style.backgroundImage = "none";
@@ -172,6 +178,7 @@ function DrawNote (title, descr, dateP) {
 		this.style.backgroundImage = "url(edit.png)";
 		this.previousSibling.style.backgroundImage = "url(cross.png)";
 	}
+
 	editNote.onmouseout = function() {
 		this.style.backgroundColor = "#FF8C00";
 		this.style.backgroundImage = "none";
@@ -183,6 +190,7 @@ function DrawNote (title, descr, dateP) {
 		this.style.backgroundImage = "url(cross.png)";
 		this.nextSibling.style.backgroundImage = "url(edit.png)";
 	}
+
 	deleteNote.onmouseout = function() {
 		this.style.backgroundColor = "#FF8C00";
 		this.style.backgroundImage = "none";
@@ -205,39 +213,39 @@ function DrawNote (title, descr, dateP) {
 		document.getElementById('editNoteDescr').value = descrBeforeEdit;
 		noteToEdit = this.parentElement;
 		editNoteForm.style.display = "block";
-		if(!editNoteForm.classList.contains("zoomIn")) {
-			editNoteForm.className = "zoomIn";
-		}
-		// setTimeout("editNoteForm.classList.remove('zoomIn');", 1000);
+		editNoteForm.className = "zoomIn";
+		setTimeout("editNoteForm.classList.remove('zoomIn');", 950);
 	}
 
 	deleteNote.onclick = function() {
 		document.getElementById('editNoteForm').display = "none";
-		var req2 = getXmlHttp(); // создать объект для запроса к серверу
-		var resText2;
+		var req = getXmlHttp();
+		var resText;
 		var that = this;
-		if(req2) {
-			req2.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
-			req2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			var params2 = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&aim=deleteNote";
-			req2.send(params2); // отослать запрос
+		if(req) {
+			req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			var params = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&aim=deleteNote";
+			req.send(params); // отослать запрос
 			this.parentElement.setAttribute('class', 'fadeOut');
 			setTimeout(function () { 
 				that.parentElement.parentElement.removeChild(that.parentElement);
-				}, 1000);
+				}, 950);
 		}
 		else {
 			alert("Браузер не поддерживает AJAX");
 		}
 	}
-	document.getElementById('noteCollection').appendChild(note); 
+
+	document.getElementById('noteCollection').appendChild(note);
+	setTimeout("note.classList.remove('fadeIn');", 950);
 }
 
 
 //проверяет, авторизирован ли пользователь
 function CheckAutorizationIntervalMain() {
-		var req = getXmlHttp();
-
+	var req = getXmlHttp();
+	if(req) {
 		req.onreadystatechange = function() {
 			if(req.readyState == 4) {  // если запрос закончил выполняться 
 				if(req.status == 200) {
@@ -255,25 +263,33 @@ function CheckAutorizationIntervalMain() {
 		req.open("POST", 'chAuth.php', true)  // задать адрес подключения
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		req.send(); // отослать запрос
-		setTimeout("CheckAutorizationIntervalMain()", "100");
+	}
+	else {
+		alert("Браузер не поддерживает AJAX");
+	}
+	setTimeout("CheckAutorizationIntervalMain()", 100);
 }
 
 
 function DeleteAllNotes () {
 	var req = getXmlHttp();
+	if(req) {
+		req.onreadystatechange = function() {
+			if(req.readyState == 4) {  // если запрос закончил выполняться 
+				if(req.status == 200) {
+					location.reload();
+				}
+				else alert(req.statusText);
+			}	
+		}
 
-	req.onreadystatechange = function() {
-		if(req.readyState == 4) {  // если запрос закончил выполняться 
-			if(req.status == 200) {
-				location.reload();
-			}
-			else alert(req.statusText);
-		}	
+		req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.send("aim=deleteAll"); // отослать запрос
 	}
-
-	req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
-	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	req.send("aim=deleteAll"); // отослать запрос
+	else {
+		alert("Браузер не поддерживает AJAX");
+	}
 }
 
 
@@ -283,6 +299,7 @@ function EditProfile () {
 	var passOld = document.getElementById('editProfilePassOld').value;
 	var contErr = document.getElementById('editProfileError');
 	contErr.style.display = "block";
+
 	if(passNew.trim().length == 0 || passNewRep.trim().length == 0 || passOld.trim().length == 0) {
 		contErr.innerHTML = "Fill in all the fields";
 		return;
@@ -311,27 +328,27 @@ function EditProfile () {
 	var resText;
 	if(req) {
 	// onreadystatechange активируется при получении ответа сервера
-	req.onreadystatechange = function() {
-		if(req.readyState == 4) {  // если запрос закончил выполняться 
-			if(req.status == 200) {
-				if(req.responseText == "ok") {
-					contErr.style.backgroundColor = "#00CD00";
-					contErr.innerHTML = "The password has been changed";
-					setTimeout("document.getElementById('editProfileForm').className = 'rollOut';", 1000);
-					setTimeout("document.getElementById('editProfileForm').style.display = 'none';document.getElementById('darkBg').style.display = 'none';document.getElementById('editProfileForm').classList.remove('rollOut');", 2000);
+		req.onreadystatechange = function() {
+			if(req.readyState == 4) {  // если запрос закончил выполняться 
+				if(req.status == 200) {
+					if(req.responseText == "ok") {
+						contErr.style.backgroundColor = "#00CD00";
+						contErr.innerHTML = "The password has been changed";
+						setTimeout("document.getElementById('editProfileForm').className = 'rollOut';", 1000);
+						setTimeout("document.getElementById('editProfileForm').style.display = 'none';document.getElementById('darkBg').style.display = 'none';document.getElementById('editProfileForm').classList.remove('rollOut');", 2000);
+					}
+					else {
+						contErr.style.display = "block";
+						contErr.innerHTML = "The password is wrong";
+					}
 				}
-				else {
-					contErr.style.display = "block";
-					contErr.innerHTML = "The password is wrong";
-				}
+				else alert(req.statusText);
 			}
-			else alert(req.statusText);
 		}
-	}
-	req.open("POST", 'Check.php', true)  // задать адрес подключения
-	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	var params = "passNew=" + document.getElementById('editProfilePass').value + "&passOld=" + document.getElementById('editProfilePassOld').value + "&aim=editProfile";
-	req.send(params); // отослать запрос
+		req.open("POST", 'Check.php', true)  // задать адрес подключения
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var params = "passNew=" + document.getElementById('editProfilePass').value + "&passOld=" + document.getElementById('editProfilePassOld').value + "&aim=editProfile";
+		req.send(params); // отослать запрос
 	}
 	else {
 		alert("Браузер не поддерживает AJAX");
@@ -340,109 +357,114 @@ function EditProfile () {
 
 
 function createNoteChangeStyle () {
-		document.getElementById('createNoteIcon').style.opacity = 0.7;
-		document.getElementById('createNoteText').style.color = "#FF4500";
+	document.getElementById('createNoteIcon').style.opacity = 0.7;
+	document.getElementById('createNoteText').style.color = "#FF4500";
 }
 
 function createNoteChangeStyleBack () {
-		document.getElementById('createNoteIcon').style.opacity = 1;
-		document.getElementById('createNoteText').style.color = "black";
+	document.getElementById('createNoteIcon').style.opacity = 1;
+	document.getElementById('createNoteText').style.color = "black";
 }
 
 function settingsChangeStyle() {
-		document.getElementById('settings').style.color = "#FF4500";
+	document.getElementById('settings').style.color = "#FF4500";
 	document.getElementById('settings').style.backgroundColor = "#9FB6CD";		
 }
+
 function settingsChangeStyleBack() {
-		document.getElementById('settings').style.color = "#696969";
-		document.getElementById('settings').style.backgroundColor = "#BCD2EE";				
+	document.getElementById('settings').style.color = "#696969";
+	document.getElementById('settings').style.backgroundColor = "#BCD2EE";				
 }
 
 function logoutChangeStyle() {
-		document.getElementById('logout').style.color = "#FF4500";
-		document.getElementById('logout').style.backgroundColor = "#9FB6CD";		
+	document.getElementById('logout').style.color = "#FF4500";
+	document.getElementById('logout').style.backgroundColor = "#9FB6CD";		
 }
+
 function logoutChangeStyleBack() {
-		document.getElementById('logout').style.color = "#696969";
-		document.getElementById('logout').style.backgroundColor = "#BCD2EE";				
+	document.getElementById('logout').style.color = "#696969";
+	document.getElementById('logout').style.backgroundColor = "#BCD2EE";				
 }
 
 function hideChangeStyle() {
-		document.getElementById('hideMenu').style.backgroundColor = "#9FB6CD";		
+	document.getElementById('hideMenu').style.backgroundColor = "#9FB6CD";		
 }
+
 function hideChangeStyleBack() {
-		document.getElementById('hideMenu').style.backgroundColor = "#BCD2EE";				
+	document.getElementById('hideMenu').style.backgroundColor = "#BCD2EE";				
 }
 
 
 function showCreateNoteForm() {
-		document.getElementById('darkBg').style.display = "block";
-		if(document.getElementById('editNoteForm').style.display == "block") {
-			document.getElementById('editNoteForm').style.display = "none";
-		}
-		if(document.getElementById('editProfileForm').style.display == "block") {
-			document.getElementById('editProfileForm').style.display = "none";
-		}
-		var noteForm = document.getElementById('noteForm');
-		document.getElementById('noteTitleForm').value = "";
-		document.getElementById('noteDescr').value = "";
-		noteForm.style.display = "block";
-		noteForm.className = "zoomIn";
-		setTimeout("noteForm.classList.remove('zoomIn');", 1000);
+	document.getElementById('darkBg').style.display = "block";
+	if(document.getElementById('editNoteForm').style.display == "block") {
+		document.getElementById('editNoteForm').style.display = "none";
 	}
+	if(document.getElementById('editProfileForm').style.display == "block") {
+		document.getElementById('editProfileForm').style.display = "none";
+	}
+	var noteForm = document.getElementById('noteForm');
+	document.getElementById('noteTitleForm').value = "";
+	document.getElementById('noteDescr').value = "";
+	noteForm.style.display = "block";
+	noteForm.className = "zoomIn";
+	setTimeout("noteForm.classList.remove('zoomIn');", 950);
+}
 
-	function showEditProfileForm () {
-		document.getElementById('darkBg').style.display = "block";
-		if(document.getElementById('editNoteForm').style.display == "block") {
-			document.getElementById('editNoteForm').style.display = "none";
-		}
-		if(document.getElementById('noteForm').style.display == "block") {
-			document.getElementById('noteForm').style.display = "none";
-		}
-		document.getElementById('editProfilePassOld').value = "";
-		document.getElementById('editProfilePass').value = "";
-		document.getElementById('editProfilePassRep').value = "";
-		document.getElementById('editProfileError').style.backgroundColor = "#FF6A6A";
-		document.getElementById('editProfileError').style.display = "none";
-		var editProfF = document.getElementById('editProfileForm');
-		editProfF.style.display = "block";
-		editProfF.className = "rollIn";
-		setTimeout("editProfF.classList.remove('rollIn');", 1000);
+
+function showEditProfileForm () {
+	document.getElementById('darkBg').style.display = "block";
+	if(document.getElementById('editNoteForm').style.display == "block") {
+		document.getElementById('editNoteForm').style.display = "none";
 	}
+	if(document.getElementById('noteForm').style.display == "block") {
+		document.getElementById('noteForm').style.display = "none";
+	}
+	document.getElementById('editProfilePassOld').value = "";
+	document.getElementById('editProfilePass').value = "";
+	document.getElementById('editProfilePassRep').value = "";
+	document.getElementById('editProfileError').style.backgroundColor = "#FF6A6A";
+	document.getElementById('editProfileError').style.display = "none";
+	var editProfF = document.getElementById('editProfileForm');
+	editProfF.style.display = "block";
+	editProfF.className = "rollIn";
+	setTimeout("editProfF.classList.remove('rollIn');", 950);
+}
 
 
 var signOfAction = 0;
-	function HideSidebar() {
-		var menu = document.getElementById('menu');
-		var noteCol = document.getElementById('noteCollection');
-		var arrow = document.getElementById('hideMenu');
+function HideSidebar() {
+	var menu = document.getElementById('menu');
+	var noteCol = document.getElementById('noteCollection');
+	var arrow = document.getElementById('hideMenu');
 		
-		arrow.onClick = "";
-		arrow.style.cursor = "wait";
-		if(signOfAction == 1) {
-			ShowSidebar();
-			return;
-		}
-		menu.className = "hideM";
-		noteCol.className = "hideMC";
-		setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";}, 950);
-		signOfAction = 1;
+	arrow.onClick = "";
+	arrow.style.cursor = "wait";
+	if(signOfAction == 1) {
+		ShowSidebar();
+		return;
 	}
+	menu.className = "hideM";
+	noteCol.className = "hideMC";
+	setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";}, 950);
+	signOfAction = 1;
+}
 
-	function ShowSidebar () {
-		var arrow = document.getElementById('hideMenu');
-		var menu = document.getElementById('menu');
-		var noteCol = document.getElementById('noteCollection');
-		menu.className = "showM";
-		noteCol.className = "showMC";
-		setTimeout(function() {menu.classList.remove('showM');noteCol.classList.remove('showMC');menu.style.left = '0';document.getElementById('noteCollection').style.marginLeft = '230px';arrow.style.backgroundImage = "url('hide.png')";arrow.onClick = "HideSidebar()"; arrow.style.cursor = "pointer";}, 950);
-		signOfAction = 0;
-	}
+
+function ShowSidebar () {
+	var arrow = document.getElementById('hideMenu');
+	var menu = document.getElementById('menu');
+	var noteCol = document.getElementById('noteCollection');
+	menu.className = "showM";
+	noteCol.className = "showMC";
+	setTimeout(function() {menu.classList.remove('showM');noteCol.classList.remove('showMC');menu.style.left = '0';document.getElementById('noteCollection').style.marginLeft = '230px';arrow.style.backgroundImage = "url('hide.png')";arrow.onClick = "HideSidebar()"; arrow.style.cursor = "pointer";}, 950);
+	signOfAction = 0;
+}
 
 
 function CloseForm () {
-		document.getElementById('darkBg').style.display = "none";
-		document.getElementById('noteForm').style.display = "none";
-		document.getElementById('editNoteForm').style.display = "none";
-		document.getElementById('editProfileForm').style.display = "none";
-	}
+	document.getElementById('darkBg').style.display = "none";
+	document.getElementById('noteForm').style.display = "none";
+	document.getElementById('editNoteForm').style.display = "none";
+	document.getElementById('editProfileForm').style.display = "none";
+}
