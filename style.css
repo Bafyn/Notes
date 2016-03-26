@@ -1,140 +1,154 @@
-	body {
-		margin: 0;
-		background-image: url("tree.jpg");
-		background-size: 100%;
-		background-color: #EEC591;
-/*		background-attachment: scroll;
-*/	}
-	#btnLogin {
-		height: 40px;
-		width: 210px;
-		margin: 0 auto;
-		margin-top: 9%;
-		margin-bottom: 4%;
-		font-size: 102%;
-		color: #fff;
-		background-color: #436EEE;
-		text-shadow: -1px 1px #417cb8;
-		border: none;
-		cursor: pointer;
-	}
-	#btnLogin:hover {
-		background-color: #346392;
-		text-shadow: -1px 1px #27496d;
-	}
-	#btnLogin:active {
-		background-color: #27496d;
-		text-shadow: -1px 1px #193047;
-	}
-	
-	#errorLog, #errorPass, #errorEmail, #errorPassRep {
-		margin: 2px;
-		color: red;
-		margin-bottom: 15px;
-		position: relative;
-		text-align: left;
-
-	}
-	#imgTitle {
-		width: 360px;
-		height: 100px;
-	}
-	#fieldsDiv {
-		margin: 0 auto;
-		margin-top: 4%;
-		text-align: center;
-		width: 280px;
-		font-size: 20px;
-		position: relative;
-		top: 20%;
-		left: 1%;
-		z-index: 2;
-	}
-	#fieldsDivReg {
-		margin: 0 auto;
-		text-align: center;
-		width: 285px;
-		font-size: 20px;
-		position: relative;
-		top: 18%;
-		left: 1%;
-		z-index: 2;
-	}
-	#imgDiv {
-		margin: 0 auto;
-		margin-top: 2%;
-		margin-bottom: 2%;
-		width: 360px;
-	}
-	#descr {
-		margin: 0 auto;
-		font-family:cursive, verdana, fantasy;
-		font-size: 35px;
-		color: #4F4F4F;
-		text-align: center;
-		width: 670px;
-	}
-	#log, #pass, #email, #passRep {
-		width: 250px;
-		height: 40px;
-		display: inline-block;
-		font-size: 20px;
-		border-color: #87CEEB;
-		position: relative;
-		margin: 0 auto;
-		background-color: #F0FFFF;
-		border-style: none;
-		border-bottom-style: solid;
-		padding: 1px 1px 0px 30px;
-		outline: none;
-		background: url('login-sprite.png') no-repeat;
-	}
-
-	#log, #email {
-    	background-position: 5px -2px;
-	}
-
-	#pass, #passRep {
-    	background-position: 5px -52px;
-	}
-
-	#noteImg {
-		width: 450px;
-		height: 410px;
-	}
-	#noteImgReg {
-		position: relative;
-		margin: 0 auto;
-		width: 480px;
-		height: 510px;
-	}
-	#noteAndFields {
-		margin: 0 auto;
-		width: 450px;
-		height: 420px;
-	}
-	#createAccount, #backToLogin {
-		color: #4169E1;
-		font-size: 90%;
-		text-decoration: none;
-	}
-	#backToLogin {
-		padding:0px 40px 0px 10px;
-		font-size: 80%;
+body {
+	margin: 0;
+	background-image: url("tree.jpg");
+	background-size: 100%;
+	background-color: #EEC591;
+/*		background-attachment: scroll;*/	
 }
-	#copy {
+
+#btnLogin {
+	height: 40px;
+	width: 210px;
+	margin: 0 auto;
+	margin-top: 5%;
+	margin-bottom: 4%;
+	font-size: 102%;
+	color: #fff;
+	background-color: #436EEE;
+	text-shadow: -1px 1px #417cb8;
+	border: none;
+	cursor: pointer;
+}
+
+#btnLogin:hover {
+	background-color: #346392;
+	text-shadow: -1px 1px #27496d;
+}
+
+#btnLogin:active {
+	background-color: #27496d;
+	text-shadow: -1px 1px #193047;
+}
+	
+#errorLog, #errorPass, #errorEmail, #errorPassRep {
+	margin: 2px;
+	color: red;
+	margin-bottom: 15px;
+	position: relative;
+	text-align: left;
+}
+
+#imgTitle {
+	width: 370px;
+	height: 120px;
+}
+
+#fieldsDiv {
+	margin: 0 auto;
+	margin-top: 4%;
+	text-align: center;
+	width: 280px;
+	font-size: 20px;
+	position: relative;
+	top: 20%;
+	left: 1%;
+	z-index: 2;
+}
+
+#fieldsDivReg {
+	margin: 0 auto;
+	text-align: center;
+	width: 285px;
+	font-size: 20px;
+	position: relative;
+	top: 18%;
+	left: 1%;
+	z-index: 2;
+}
+
+#imgDiv {
+	margin: 0 auto;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	width: 370px;
+}
+
+#descr {
+	margin: 0 auto;
+	font-family:cursive, verdana, fantasy;
+	font-size: 35px;
+	color: #4F4F4F;
+	text-align: center;
+	width: 670px;
+}
+
+#log, #pass, #email, #passRep {
+	width: 250px;
+	height: 40px;
+	display: inline-block;
+	font-size: 20px;
+	border-color: #87CEEB;
+	position: relative;
+	margin: 0 auto;
+	background-color: #F0FFFF;
+	border-style: none;
+	border-bottom-style: solid;
+	padding: 1px 1px 0px 30px;
+	outline: none;
+	background: url('login-sprite.png') no-repeat;
+}
+
+#log, #email {
+    background-position: 5px -2px;
+}
+
+#pass, #passRep {
+    background-position: 5px -52px;
+}
+
+#noteImg {
+	width: 450px;
+	height: 410px;
+}
+
+#noteImgReg {
+	position: relative;
+	margin: 0 auto;
+	width: 480px;
+	height: 510px;
+}
+
+#noteAndFields {
+	margin: 0 auto;
+	width: 450px;
+	height: 420px;
+}
+
+#createAccount, #backToLogin {
+	color: #4169E1;
+	font-size: 90%;
+	text-decoration: none;
+}
+
+#backToLogin {
+	padding:0px 40px 0px 10px;
+	font-size: 80%;
+}
+
+#copy {
 	width: 100%;
 	text-align: center;
 	bottom: 0;
- 	}
-	#noteAndFieldsReg {
-		position: relative;
-		margin: 0 auto;
-		width: 480px;
-		height: 510px;
+}
 
-	}
-	#qwe {
-		position: absolute;
-		z-index: 1;
-	}
+#noteAndFieldsReg {
+	position: relative;
+	margin: 0 auto;
+	width: 480px;
+	height: 510px;
+}
+
+#mainNoteDiv {
+	position: absolute;
+	z-index: 1;
+}
