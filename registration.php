@@ -46,7 +46,7 @@ if(isset($_COOKIE['id']) && isset($_COOKIE['hash'])) {
 				<p id = "errorPassRep" name = "errorPasswordRep"></p>
 
 				<input type = "submit" name="submit" id = "btnLogin" value="Sign up" /><br/>
-				<a id = "backToLogin" href="index.html" />Forgot password?</a>
+				<a id = "backToLogin" href="#" />Forgot password?</a>
 				<a id = "backToLogin" href="index.php" />Log in</a>
 			</form>
 		</div>
