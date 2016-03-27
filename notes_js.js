@@ -42,7 +42,7 @@ function CreateNote() {
 			if(req.status == 200) {
 				var titleValue = document.getElementById('noteTitleForm').value;
 				var descrValue = document.getElementById('noteDescr').value;
-				DrawNote(titleValue, descrValue, dateP);
+				DrawNote(titleValue, descrValue, dateP, false);
 				document.getElementById('noteForm').className = "zoomOut";
 				setTimeout("document.getElementById('noteForm').style.display = 'none';document.getElementById('noteForm').classList.remove('zoomOut');document.getElementById('darkBg').style.display = 'none';", 450);
 			}
@@ -107,7 +107,7 @@ function EditNote() {
 }
 
 
-function DrawNotes() {
+function DrawNotes(param) {
 	CheckAutorizationIntervalMain();
 	var req = getXmlHttp();
 
@@ -118,7 +118,12 @@ function DrawNotes() {
 					var noteJ = req.responseText;
 					var notes = JSON.parse(noteJ);
 					for(var i = 0; i < notes.length; i++) {
-						DrawNote(notes[i].title, notes[i].description, notes[i].date);
+						if(param == 'aim=drawNotes') {
+							DrawNote(notes[i].title, notes[i].description, notes[i].date, false);
+						}
+						else {
+							DrawNote(notes[i].title, notes[i].description, notes[i].date, true);
+						}
 					}
 				}
 				else alert(req.statusText);
@@ -127,7 +132,7 @@ function DrawNotes() {
 
 		req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		req.send("aim=drawNotes"); // отослать запрос
+		req.send(param); // отослать запрос
 	}
 	else {
 		alert("Браузер не поддерживает AJAX");
@@ -135,7 +140,7 @@ function DrawNotes() {
 }
 
 
-function DrawNote (title, descr, dateP) {
+function DrawNote (title, descr, dateP, isArchive) {
 	var note = document.createElement('div');
 	var deleteNote = document.createElement('div');
 	var editNote = document.createElement('div');
@@ -145,6 +150,14 @@ function DrawNote (title, descr, dateP) {
 
 	note.className = "fadeIn";
 	note.setAttribute('id', 'note');
+	if(isArchive) {
+		deleteNote.setAttribute('title', 'Delete');
+		editNote.setAttribute('title', 'Back to notes collection');
+	}
+	else {
+		deleteNote.setAttribute('title', 'Move to archive');
+		editNote.setAttribute('title', 'Edit note');
+	}
 	deleteNote.setAttribute('id', 'deleteNote');
 	editNote.setAttribute('id', 'editNote');
 	noteTitle.setAttribute('id', 'noteTitle');
@@ -164,7 +177,12 @@ function DrawNote (title, descr, dateP) {
 	note.appendChild(date);
 
 	noteTitle.onmouseover = function() {
-		this.previousSibling.style.backgroundImage = "url(edit.png)";
+		if(isArchive) {
+			this.previousSibling.style.backgroundImage = "url(returnBack.png)";
+		}
+		else {
+			this.previousSibling.style.backgroundImage = "url(edit.png)";
+		}
 		this.previousSibling.previousSibling.style.backgroundImage = "url(cross.png)";
 	}
 
@@ -174,66 +192,122 @@ function DrawNote (title, descr, dateP) {
 	}
 
 	editNote.onmouseover = function() {
-		this.style.backgroundColor = "#FFC125";
-		this.style.backgroundImage = "url(edit.png)";
+		this.style.backgroundColor = "#2586e9";
+		// this.style.backgroundColor = "#FFC125";
+		if(isArchive) {
+			this.style.backgroundImage = "url(returnBack.png)";
+		}
+		else {
+			this.style.backgroundImage = "url(edit.png)";
+		}
 		this.previousSibling.style.backgroundImage = "url(cross.png)";
 	}
 
 	editNote.onmouseout = function() {
-		this.style.backgroundColor = "#FF8C00";
+		this.style.backgroundColor = "#0FB4DF";
+		// this.style.backgroundColor = "#FF8C00";
 		this.style.backgroundImage = "none";
 		this.previousSibling.style.backgroundImage = "none";
 	}
 
 	deleteNote.onmouseover = function() {
-		this.style.backgroundColor = "#FFC125";
+		this.style.backgroundColor = "#2586e9";
+		// this.style.backgroundColor = "#FFC125";
 		this.style.backgroundImage = "url(cross.png)";
-		this.nextSibling.style.backgroundImage = "url(edit.png)";
+		if(isArchive) {
+			this.nextSibling.style.backgroundImage = "url(returnBack.png)";
+		}
+		else {
+			this.nextSibling.style.backgroundImage = "url(edit.png)";
+		}
 	}
 
 	deleteNote.onmouseout = function() {
-		this.style.backgroundColor = "#FF8C00";
+		this.style.backgroundColor = "#0FB4DF";
+		// this.style.backgroundColor = "#FF8C00";
 		this.style.backgroundImage = "none";
 		this.nextSibling.style.backgroundImage = "none";
 	}
 
-	editNote.onclick = function() {
-		document.getElementById('darkBg').style.display = "block";
-		if(document.getElementById('noteForm').style.display == "block") {
-			document.getElementById('noteForm').style.display = "none";
+	if(isArchive) {
+		editNote.onclick = function () {
+			var req = getXmlHttp();
+			var that = this;
+			if(req) {
+				req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+				req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				var params = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&date=" + this.parentElement.children[4].innerHTML +"&aim=moveNoteToMain";
+				req.send(params); // отослать запрос
+				this.parentElement.setAttribute('class', 'fadeOut');
+				setTimeout(function () { 
+					that.parentElement.parentElement.removeChild(that.parentElement);
+				}, 950);
+			}
+			else {
+				alert("Браузер не поддерживает AJAX");
+			}
 		}
-		if(document.getElementById('editProfileForm').style.display == "block") {
-			document.getElementById('editProfileForm').style.display = "none";
+	}
+	else {
+		editNote.onclick = function() {
+			document.getElementById('darkBg').style.display = "block";
+			if(document.getElementById('noteForm').style.display == "block") {
+				document.getElementById('noteForm').style.display = "none";
+			}
+			if(document.getElementById('editProfileForm').style.display == "block") {
+				document.getElementById('editProfileForm').style.display = "none";
+			}
+			var editNoteForm = document.getElementById('editNoteForm');
+			titleBeforeEdit = this.nextSibling.innerHTML;
+			descrBeforeEdit = this.nextSibling.nextSibling.innerHTML;
+			dateBeforeEdit = this.nextSibling.nextSibling.nextSibling.innerHTML;
+			document.getElementById('editNoteTitleForm').value = titleBeforeEdit;
+			document.getElementById('editNoteDescr').value = descrBeforeEdit;
+			noteToEdit = this.parentElement;
+			editNoteForm.style.display = "block";
+			editNoteForm.className = "zoomIn";
+			setTimeout("editNoteForm.classList.remove('zoomIn');", 950);
 		}
-		var editNoteForm = document.getElementById('editNoteForm');
-		titleBeforeEdit = this.nextSibling.innerHTML;
-		descrBeforeEdit = this.nextSibling.nextSibling.innerHTML;
-		dateBeforeEdit = this.nextSibling.nextSibling.nextSibling.innerHTML;
-		document.getElementById('editNoteTitleForm').value = titleBeforeEdit;
-		document.getElementById('editNoteDescr').value = descrBeforeEdit;
-		noteToEdit = this.parentElement;
-		editNoteForm.style.display = "block";
-		editNoteForm.className = "zoomIn";
-		setTimeout("editNoteForm.classList.remove('zoomIn');", 950);
 	}
 
-	deleteNote.onclick = function() {
-		document.getElementById('editNoteForm').display = "none";
-		var req = getXmlHttp();
-		var resText;
-		var that = this;
-		if(req) {
-			req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
-			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			var params = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&aim=deleteNote";
-			req.send(params); // отослать запрос
-			this.parentElement.setAttribute('class', 'fadeOut');
-			setTimeout(function () { 
-				that.parentElement.parentElement.removeChild(that.parentElement);
+	if(isArchive) {
+		deleteNote.onclick = function() {
+			document.getElementById('editNoteForm').display = "none";
+			var req = getXmlHttp();
+			var that = this;
+			if(req) {
+				req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+				req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				var params = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&date=" + this.parentElement.children[4].innerHTML + "&aim=deleteNote";
+				req.send(params); // отослать запрос
+				this.parentElement.setAttribute('class', 'fadeOut');
+				setTimeout(function () { 
+					that.parentElement.parentElement.removeChild(that.parentElement);
 				}, 950);
+			}
+			else {
+				alert("Браузер не поддерживает AJAX");
+			}
 		}
-		else {
-			alert("Браузер не поддерживает AJAX");
+	}
+	else {
+		deleteNote.onclick = function() {
+			document.getElementById('editNoteForm').display = "none";
+			var req = getXmlHttp();
+			var that = this;
+			if(req) {
+				req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
+				req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				var params = "title=" + this.parentElement.children[2].innerHTML + "&description=" + this.parentElement.children[3].value + "&date=" + this.parentElement.children[4].innerHTML + "&aim=moveToArchive";
+				req.send(params); // отослать запрос
+				this.parentElement.setAttribute('class', 'fadeOut');
+				setTimeout(function () { 
+					that.parentElement.parentElement.removeChild(that.parentElement);
+				}, 950);
+			}
+			else {
+				alert("Браузер не поддерживает AJAX");
+			}
 		}
 	}
 
@@ -271,7 +345,7 @@ function CheckAutorizationIntervalMain() {
 }
 
 
-function DeleteAllNotes () {
+function DeleteAllNotes (param) {
 	var req = getXmlHttp();
 	if(req) {
 		req.onreadystatechange = function() {
@@ -285,7 +359,7 @@ function DeleteAllNotes () {
 
 		req.open("POST", 'actions_with_notes.php', true)  // задать адрес подключения
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		req.send("aim=deleteAll"); // отослать запрос
+		req.send(param); // отослать запрос
 	}
 	else {
 		alert("Браузер не поддерживает AJAX");
@@ -366,6 +440,16 @@ function createNoteChangeStyleBack () {
 	document.getElementById('createNoteText').style.color = "black";
 }
 
+function archiveChangeStyle () {
+	document.getElementById('archive').style.color = "#FF4500";
+	document.getElementById('archive').style.backgroundColor = "#9FB6CD";
+}
+
+function archiveChangeStyleBack () {
+	document.getElementById('archive').style.color = "#696969";
+	document.getElementById('archive').style.backgroundColor = "#BCD2EE";
+}
+
 function settingsChangeStyle() {
 	document.getElementById('settings').style.color = "#FF4500";
 	document.getElementById('settings').style.backgroundColor = "#9FB6CD";		
@@ -392,6 +476,15 @@ function hideChangeStyle() {
 
 function hideChangeStyleBack() {
 	document.getElementById('hideMenu').style.backgroundColor = "#BCD2EE";				
+}
+
+
+function ShowArchive () {
+	location.href = "archive.html";
+}
+
+function ShowNotes () {
+	location.href = "notesCollection.html";
 }
 
 
@@ -433,7 +526,7 @@ function showEditProfileForm () {
 
 
 var signOfAction = 0;
-function HideSidebar() {
+function HideSidebar(isNoteColl) {
 	var menu = document.getElementById('menu');
 	var noteCol = document.getElementById('noteCollection');
 	var arrow = document.getElementById('hideMenu');
@@ -446,7 +539,7 @@ function HideSidebar() {
 	}
 	menu.className = "hideM";
 	noteCol.className = "hideMC";
-	setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";}, 950);
+	setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";document.getElementById('logo').style.display = "none";document.getElementById('settings').style.display = "none";document.getElementById('archive').style.display = "none";if(isNoteColl)document.getElementById('trash').style.display = 'none'}, 950);
 	signOfAction = 1;
 }
 
@@ -457,6 +550,10 @@ function ShowSidebar () {
 	var noteCol = document.getElementById('noteCollection');
 	menu.className = "showM";
 	noteCol.className = "showMC";
+	document.getElementById('logo').style.display = "block";
+	document.getElementById('settings').style.display = "block";
+	document.getElementById('archive').style.display = "block";
+	document.getElementById('trash').style.display = "inline";
 	setTimeout(function() {menu.classList.remove('showM');noteCol.classList.remove('showMC');menu.style.left = '0';document.getElementById('noteCollection').style.marginLeft = '230px';arrow.style.backgroundImage = "url('hide.png')";arrow.onClick = "HideSidebar()"; arrow.style.cursor = "pointer";}, 950);
 	signOfAction = 0;
 }
