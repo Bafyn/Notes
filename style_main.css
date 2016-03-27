@@ -53,7 +53,7 @@ body {
     padding: 5px 0 5px 10px;
     font-family: AllodsWest;
     font-size: 101%;
-    top: 60%;
+    top: 50%;
     left: 0;
     right: 0;
 }
@@ -61,7 +61,8 @@ body {
 #loggedName {
     font-size: 190%;
     text-align: center;
-    text-shadow: 2px 2px 2px #000000;   
+    text-shadow: 2px 2px 2px #000000; 
+    letter-spacing: 1px;  
 }
 
 #deleteAll {
@@ -72,7 +73,7 @@ body {
     padding: 5px 0 5px 10px;
     font-family: AllodsWest;
     font-size: 101%;
-    top: 77%;
+    top: 67%;
     left: 0;
     right: 0;
 }
@@ -90,15 +91,31 @@ body {
     border-radius: 5px;
 }
 
+#archive {
+    position: absolute;
+    border-top: 1px solid #800080;
+    line-height: 50px;
+    height: 50px;
+    color: #696969;
+    border-bottom: 1px solid #800080;
+    text-align: center;
+    font-family: DyrDyr;
+    font-size: 150%;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 6;
+}
+
 #settings {
-	position: absolute;
+	position: relative;
     background-color: #BCD2EE;
-	height: 31px;
-	line-height: 31px;
-	border-top: 1px solid #800080;
-	border-bottom: 1px solid #800080;
+    margin-top: 50px;
+	height: 51px;
+	line-height: 52px;
+    border-bottom: 1px solid #800080;
 	color: #696969;
-	padding: 10px 0 10px 0;
 	text-align: center;
 	font-family: DyrDyr;
 	font-size: 150%;
@@ -113,7 +130,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-	height: 100px;
+	height: 150px;
 }
 
 #logout {
@@ -123,12 +140,12 @@ body {
 	right: 0;
 	left: 0;
 	color: #696969;
-	line-height: 47px;
+	line-height: 48px;
 	text-align: center;
 	font-family: DyrDyr;
 	font-size: 150%;
 	cursor: pointer;
-	height: 47px;
+	height: 48px;
 	width: 85%;
 }
 
@@ -137,7 +154,7 @@ body {
 	bottom: 0;
 	right: 0;
 	width: 15%;
-	height: 46px;
+	height: 48px;
 	cursor: pointer;
     background-image: url('hide.png');
     background-position: 50% 50%;
@@ -313,7 +330,8 @@ fieldset
     width: 9%;
     height: 43px;
     cursor: pointer;
-    background-color: #FF8C00;
+    background-color: #0FB4DF;
+    /*background-color: #FF8C00;*/
 }
 
 #editNote {
@@ -326,7 +344,8 @@ fieldset
     width: 9%;
     height: 43px;
     cursor: pointer;
-    background-color: #FF8C00;
+    background-color: #0FB4DF;
+    /*background-color: #FF8C00;*/
 }
 
 #noteTitle {
@@ -341,8 +360,9 @@ fieldset
     width: 82%;
     height: 35px;
     line-height: 17.5px;
-    background-color: #FF8C00;
-}
+    background-color: #0FB4DF;
+/*    background-image:linear-gradient(to bottom, #4FABDB, #5FABDC);
+*/}
 
 #noteDescription {
     resize:none;
@@ -384,7 +404,9 @@ fieldset
     border-top:1px solid #FFC125;
     width: 220px;
     top: -15px;
-    background-color: #FFE4B5;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #FFFAF0;
 }
 
 /*Анимации*/
