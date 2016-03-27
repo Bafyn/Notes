@@ -58,7 +58,7 @@ if($_POST['aim'] == "drawNotes" || $_POST['aim'] == "drawNotesArchive") {
 		$notes = $collection -> find(array('id' => $_COOKIE['id'], 'archive' => 'true'));
 	}
 	while($note = $notes -> getNext()) {
-    	$notesArray .= "{\"title\":\"".$note['title']."\", \"description\":\"".$note['description']."\", \"date\": \"".$note['date']."\"}";
+		$notesArray .= json_encode($note);
     	if($notes -> hasNext()) {
     		$notesArray .= ",";
     	}
