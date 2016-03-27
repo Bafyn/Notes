@@ -9,7 +9,7 @@
 	<script type="text/javascript" src = "notes_js.js"></script>
 </head>
 
-<body onload="DrawNotes()">
+<body onload="DrawNotes('aim=drawNotes')">
 	<div id="darkBg"></div>
 	<div id = "menu">
 		<div id="inner">
@@ -20,11 +20,12 @@
 			</div>
 		</div>
 		<div id="loggedDiv">logged as:<br/><span id = "loggedName"></span></div>
-		<div id="deleteAll" onclick="DeleteAllNotes()">Delete all notes<img src="trash.png" id="trash"></div>
+		<div id="deleteAll">Move all to archive<img src="trash.png" id="trash" onclick="DeleteAllNotes('aim=moveAll')"></div>
 		<div id="menuFooter">
+			<div id="archive" onclick="ShowArchive()" onmouseover="archiveChangeStyle()" onmouseout="archiveChangeStyleBack()">Archive</div>
 			<div id="settings" onclick="showEditProfileForm()" onmouseover="settingsChangeStyle()" onmouseout="settingsChangeStyleBack()">Edit profile</div>
 			<div id="logout" onclick="Logout()" onmouseover="logoutChangeStyle()" onmouseout="logoutChangeStyleBack()">Log out</div>
-			<div id="hideMenu" onclick="HideSidebar()" onmouseover="hideChangeStyle()" onmouseout="hideChangeStyleBack()"></div>
+			<div id="hideMenu" onclick="HideSidebar(true)" onmouseover="hideChangeStyle()" onmouseout="hideChangeStyleBack()"></div>
 		</div>	
 	</div>
 
