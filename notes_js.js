@@ -178,12 +178,12 @@ function DrawNote (title, descr, dateP, isArchive) {
 
 	noteTitle.onmouseover = function() {
 		if(isArchive) {
-			this.previousSibling.style.backgroundImage = "url(returnBack.png)";
+			this.previousSibling.style.backgroundImage = "url(images/returnBack.png)";
 		}
 		else {
-			this.previousSibling.style.backgroundImage = "url(edit.png)";
+			this.previousSibling.style.backgroundImage = "url(images/edit.png)";
 		}
-		this.previousSibling.previousSibling.style.backgroundImage = "url(cross.png)";
+		this.previousSibling.previousSibling.style.backgroundImage = "url(images/cross.png)";
 	}
 
 	noteTitle.onmouseout = function() {
@@ -195,12 +195,12 @@ function DrawNote (title, descr, dateP, isArchive) {
 		this.style.backgroundColor = "#2586e9";
 		// this.style.backgroundColor = "#FFC125";
 		if(isArchive) {
-			this.style.backgroundImage = "url(returnBack.png)";
+			this.style.backgroundImage = "url(images/returnBack.png)";
 		}
 		else {
-			this.style.backgroundImage = "url(edit.png)";
+			this.style.backgroundImage = "url(images/edit.png)";
 		}
-		this.previousSibling.style.backgroundImage = "url(cross.png)";
+		this.previousSibling.style.backgroundImage = "url(images/cross.png)";
 	}
 
 	editNote.onmouseout = function() {
@@ -213,12 +213,12 @@ function DrawNote (title, descr, dateP, isArchive) {
 	deleteNote.onmouseover = function() {
 		this.style.backgroundColor = "#2586e9";
 		// this.style.backgroundColor = "#FFC125";
-		this.style.backgroundImage = "url(cross.png)";
+		this.style.backgroundImage = "url(images/cross.png)";
 		if(isArchive) {
-			this.nextSibling.style.backgroundImage = "url(returnBack.png)";
+			this.nextSibling.style.backgroundImage = "url(images/returnBack.png)";
 		}
 		else {
-			this.nextSibling.style.backgroundImage = "url(edit.png)";
+			this.nextSibling.style.backgroundImage = "url(images/edit.png)";
 		}
 	}
 
@@ -440,45 +440,6 @@ function createNoteChangeStyleBack () {
 	document.getElementById('createNoteText').style.color = "black";
 }
 
-function archiveChangeStyle () {
-	document.getElementById('archive').style.color = "#FF4500";
-	document.getElementById('archive').style.backgroundColor = "#9FB6CD";
-}
-
-function archiveChangeStyleBack () {
-	document.getElementById('archive').style.color = "#696969";
-	document.getElementById('archive').style.backgroundColor = "#BCD2EE";
-}
-
-function settingsChangeStyle() {
-	document.getElementById('settings').style.color = "#FF4500";
-	document.getElementById('settings').style.backgroundColor = "#9FB6CD";		
-}
-
-function settingsChangeStyleBack() {
-	document.getElementById('settings').style.color = "#696969";
-	document.getElementById('settings').style.backgroundColor = "#BCD2EE";				
-}
-
-function logoutChangeStyle() {
-	document.getElementById('logout').style.color = "#FF4500";
-	document.getElementById('logout').style.backgroundColor = "#9FB6CD";		
-}
-
-function logoutChangeStyleBack() {
-	document.getElementById('logout').style.color = "#696969";
-	document.getElementById('logout').style.backgroundColor = "#BCD2EE";				
-}
-
-function hideChangeStyle() {
-	document.getElementById('hideMenu').style.backgroundColor = "#9FB6CD";		
-}
-
-function hideChangeStyleBack() {
-	document.getElementById('hideMenu').style.backgroundColor = "#BCD2EE";				
-}
-
-
 function ShowArchive () {
 	location.href = "archive.html";
 }
@@ -539,7 +500,7 @@ function HideSidebar(isNoteColl) {
 	}
 	menu.className = "hideM";
 	noteCol.className = "hideMC";
-	setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";document.getElementById('logo').style.display = "none";document.getElementById('settings').style.display = "none";document.getElementById('archive').style.display = "none";if(isNoteColl)document.getElementById('trash').style.display = 'none'}, 950);
+	setTimeout(function() {menu.classList.remove('hideM');noteCol.classList.remove('hideMC');menu.style.left = '-190px';document.getElementById('noteCollection').style.marginLeft = '40px';arrow.style.backgroundImage = "url('images/hideBack.png')";arrow.onClick = "ShowSidebar()"; arrow.style.cursor = "pointer";document.getElementById('logo').style.display = "none";document.getElementById('settings').style.display = "none";document.getElementById('archive').style.display = "none";if(isNoteColl)document.getElementById('trash').style.display = 'none'}, 950);
 	signOfAction = 1;
 }
 
@@ -554,7 +515,7 @@ function ShowSidebar () {
 	document.getElementById('settings').style.display = "block";
 	document.getElementById('archive').style.display = "block";
 	document.getElementById('trash').style.display = "inline";
-	setTimeout(function() {menu.classList.remove('showM');noteCol.classList.remove('showMC');menu.style.left = '0';document.getElementById('noteCollection').style.marginLeft = '230px';arrow.style.backgroundImage = "url('hide.png')";arrow.onClick = "HideSidebar()"; arrow.style.cursor = "pointer";}, 950);
+	setTimeout(function() {menu.classList.remove('showM');noteCol.classList.remove('showMC');menu.style.left = '0';document.getElementById('noteCollection').style.marginLeft = '230px';arrow.style.backgroundImage = "url('images/hide.png')";arrow.onClick = "HideSidebar()"; arrow.style.cursor = "pointer";}, 950);
 	signOfAction = 0;
 }
 
