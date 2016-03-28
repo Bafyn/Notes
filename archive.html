@@ -4,7 +4,7 @@
 <head>
 	<title>Notes</title>
 	<link rel="stylesheet" type="text/css" href="style_main.css" />
-	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="icon" type="image/png" href="images/favicon.png" />
 	<script type="text/javascript" src = "users_js.js"></script>
 	<script type="text/javascript" src = "notes_js.js"></script>
 </head>
@@ -15,11 +15,11 @@
 		<div id="inner">
 			<a href="" id="logo"></a>
 			<div id="createNoteDiv" style="cursor:auto;">
-				<img src="note3.png" id="createNoteIcon" /><br/>
+				<img src="images/note3.png" id="createNoteIcon" /><br/>
 			</div>
 		</div>
 		<div id="loggedDiv">logged as:<br/><span id = "loggedName"></span></div>
-		<div id="deleteAll">Delete all notes<img src="trash.png" id="trash" onclick="DeleteAllNotes('aim=deleteAll')"></div>
+		<div id="deleteAll">Delete all notes<img src="images/trash.png" id="trash" onclick="DeleteAllNotes('aim=deleteAll')"></div>
 		<div id="menuFooter">
 			<div id="archive" onclick="ShowNotes()" onmouseover="archiveChangeStyle()" onmouseout="archiveChangeStyleBack()">Notes</div>
 			<div id="settings" onclick="showEditProfileForm()" onmouseover="settingsChangeStyle()" onmouseout="settingsChangeStyleBack()">Edit profile</div>
@@ -30,7 +30,7 @@
 
 	<div id="noteForm">
 		<h1>create note</h1>
-		<img src="close.png" id="closeImg" onclick="CloseForm()" />
+		<img src="images/close.png" id="closeImg" onclick="CloseForm()" />
     	<fieldset id="inputs">
      		<input type="text" maxlength="20" id="noteTitleForm" required autofocus placeholder = "Enter the title of the note" />
 			<textarea id="noteDescr" required maxlength = "2000" cols="50" rows="5" placeholder = "Enter the  description of the note"></textarea>
@@ -41,7 +41,7 @@
 
 	<div id="editNoteForm">
 		<h1>edit note</h1>
-		<img src="close.png" id="closeImg" onclick = "CloseForm()" />
+		<img src="images/close.png" id="closeImg" onclick = "CloseForm()" />
     	<fieldset id="inputs">
      		<input type="text" maxlength="20" id="editNoteTitleForm" required autofocus placeholder = "Enter the new title of the note" />
 			<textarea id="editNoteDescr" required maxlength = "2000" cols="50" rows="5" placeholder = "Enter the new  description of the note"></textarea>
@@ -52,7 +52,7 @@
 
 	<div id = "editProfileForm">
 		<h1>edit profile</h1>
-		<img src="close.png" id="closeImg" onclick = "CloseForm()" />
+		<img src="images/close.png" id="closeImg" onclick = "CloseForm()" />
     	<fieldset id="inputs">
         	<input type="password" maxlength="25" id="editProfilePassOld" required autofocus placeholder = "Enter the current password" />
      		<input type="password" maxlength="25" id="editProfilePass" required placeholder = "Enter the new password" />
@@ -62,17 +62,7 @@
     	<input type="button" id="editNoteBtn" onclick="EditProfile()" value="Accept" />
 	</div>
 
-	<div id="noteCollection">
-	<!-- 	Структура заметки
- 		<div id="note">
-			<div id="deleteNote"></div>
-			<div id="editNote"></div>
-			<p id="noteTitle" onclick="DrawNotes()">First_Note</p>
-			<textarea id="noteDescription" readonly="true" maxlength = "2000">Hello, world!</textarea>
-			<span id = "date">Changed:27.03.12 23:23:12</span>
-		</div> 
-	-->
-	</div> 
+	<div id="noteCollection"></div> 
 </body>
 
 </html>
