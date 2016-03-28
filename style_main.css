@@ -161,6 +161,11 @@ body {
 	background-repeat: no-repeat;
 }
 
+#hideMenu:hover, #logout:hover, #settings:hover, #archive:hover {
+    color: #FF4500;
+    background-color: #9FB6CD;
+}
+
 #noteForm, #editNoteForm, #editProfileForm {
 	display: none;
     background-color: #FFE4B5;
