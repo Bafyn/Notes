@@ -16,18 +16,18 @@ if(isset($_COOKIE['id']) && isset($_COOKIE['hash'])) {
 <head>
 	<title>Log in</title>
 	<link rel="stylesheet" type="text/css" href="style.css" />
-	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="icon" type="image/png" href="images/favicon.png" />
 	<script type="text/javascript" src = "users_js.js"></script>
 </head>
 
 <body>
 	<div id = "imgDiv">
-		<img src="notes.png" id = "imgTitle" />
+		<img src="images/notes.png" id = "imgTitle" />
 	</div>
 	<p id = "descr">Convenient means of storing notes!</p><br/>
 	<div id = "noteAndFields">
 		<div id="mainNoteDiv">
-			<img src="note.png" id = "noteImg" />
+			<img src="images/note.png" id = "noteImg" />
 		</div>
 		<div id = "fieldsDiv">
 			<form method="post"><br/>
